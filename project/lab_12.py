@@ -1,6 +1,6 @@
 import os
 import speech_recognition as sr
-import pyaudio
+import pyaudio  # > pipwin install pyaudio
 
 data_dir = f"{os.path.dirname(__file__)}/../data/"
 
