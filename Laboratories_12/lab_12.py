@@ -1,6 +1,9 @@
+import os
 import time
 import random
 import speech_recognition as sr
+
+data_dir = f"{os.path.dirname(__file__)}/data/"
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -9,7 +12,7 @@ def sg_recognize_from_wav():
     Speech recognition test from wav file
     """
     r = sr.Recognizer()
-    harvard = sr.AudioFile('harvard.wav')
+    harvard = sr.AudioFile(f'{data_dir}harvard.wav')
     with harvard as source:
         audio = r.record(source)
 
@@ -38,7 +41,7 @@ def recognize_speech_from_mic(recognizer, microphone):
     Returns a dictionary with three keys:
     "success": a boolean indicating whether or not the API request was
                successful
-    "error":   `None` if no error occurred, otherwise a string containing
+    "error":   `None` if no error occured, otherwise a string containing
                an error message if the API could not be reached or
                speech was unrecognizable
     "transcription": `None` if speech could not be transcribed,
@@ -81,7 +84,7 @@ def recognize_speech_from_mic(recognizer, microphone):
 
 
 if __name__ == '__main__':
-    # set the list of words, max number of guesses, and prompt limit
+    # set the list of words, maxnumber of guesses, and prompt limit
     WORDS = ["apple", "banana", "grape", "orange", "mango", "lemon"]
     NUM_GUESSES = 3
     PROMPT_LIMIT = 5
