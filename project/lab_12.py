@@ -2,14 +2,15 @@ import os
 import time
 import random
 import speech_recognition as sr
+import pyaudio  # > pipwin install pyaudio
 
-data_dir = f"{os.path.dirname(__file__)}/data/"
+data_dir = f"{os.path.dirname(__file__)}/../data/"
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def sg_recognize_from_wav():
+def sg_recognise_from_wav():
     """
-    Speech recognition test from wav file
+    Test rozpoznawania mowy z pliku wav
     """
     r = sr.Recognizer()
     harvard = sr.AudioFile(f'{data_dir}harvard.wav')
@@ -20,9 +21,9 @@ def sg_recognize_from_wav():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def sg_recognize_from_mic():
+def sg_recognise_from_mic():
     """
-    Microphone speech recognition test
+    Test rozpoznawania mowy rejestrowanej przez mikrofon
     """
     r = sr.Recognizer()
     mic = sr.Microphone()
@@ -118,7 +119,7 @@ if __name__ == '__main__':
         #     to PROMPT_LIMIT times
         guess = None
         for j in range(PROMPT_LIMIT):
-            print('Guess {}. Speak!'.format(i + 1))
+            print('Guess {}. Speak!'.format(i+1))
             guess = recognize_speech_from_mic(recognizer, microphone)
             if guess["transcription"]:
                 break
