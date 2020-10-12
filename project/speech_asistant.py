@@ -1,9 +1,8 @@
-import time
-import webbrowser
-import requests
-from googlesearch import search
 import speech_recognition as sr
+import webbrowser
 import pyttsx3
+from datetime import datetime
+from googlesearch import search
 
 
 def sa_speak(text: str):
@@ -12,12 +11,10 @@ def sa_speak(text: str):
 
 
 def sa_listen(recogniser, microphone) -> str:
-
     with microphone as source:
 
         recogniser.adjust_for_ambient_noise(source, duration=2)
-        # r.pause_threshold = 1
-        sa_speak("Say something!")
+        sa_speak("How can I help you, sir?")
         audio = recogniser.listen(source)
 
     try:
@@ -32,21 +29,12 @@ def sa_listen(recogniser, microphone) -> str:
     return query.lower()
 
 
-
-
-
-def sa_open_website(website: str):
-    for j in search(website, tld="pl", num=1, stop=1):
-        sa_speak(f"I found something! Opening {website}")
-        webbrowser.open(j)
-
-
-RESPONSES = {
-    "time": "",
-    "open google": ""
-}
-
 # TODO: open yt, open google, who made you, exit, who are you, search
+EXIT_EXPRESSIONS = [
+    "this is all",
+    "exit",
+    "bye"
+]
 
 if __name__ == '__main__':
     r = sr.Recognizer()
@@ -56,17 +44,28 @@ if __name__ == '__main__':
     engine.setProperty('rate', 150)  # default is 200
     engine.setProperty('voice', voices[1].id)
 
-    sa_speak("Welcome, I'm Macik, your speech assistant. How can I help you?")
+    sa_speak("Welcome, Sir. I'm Macik, your speech assistant.")
     while True:
         query = sa_listen(r, mic)
-        if "open website" in query:
-            sa_open_website(query.split("open website")[-1])
 
-        elif "that's all" in query:
+        if "search" in query:
+            url = "https://www.google.com.tr/search?q={}".format(query.split("search")[-1])
+            webbrowser.open(url)
+
+        elif "open website" in query:
+            website = query.split("open website")[-1]
+            for j in search(website, tld="pl", num=1, stop=1):
+                sa_speak(f"I found something! Opening {website}")
+                webbrowser.open(j)
+
+        elif "time" in query:
+            current_time = datetime.now().strftime("%H %M")
+            sa_speak(f"It's {current_time}")
+
+        elif "who made you" in query:
+            sa_speak("I have been created by Martin and Jacob")
+
+        elif any(expression in query for expression in EXIT_EXPRESSIONS):
             sa_speak("Thank you, see you later!")
             engine.stop()
             break
-        # time.sleep(5)
-
-
-
