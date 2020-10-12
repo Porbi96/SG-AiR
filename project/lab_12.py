@@ -2,15 +2,14 @@ import os
 import time
 import random
 import speech_recognition as sr
-import pyaudio  # > pipwin install pyaudio
 
 data_dir = f"{os.path.dirname(__file__)}/../data/"
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def sg_recognise_from_wav():
+def sg_recognize_from_wav():
     """
-    Test rozpoznawania mowy z pliku wav
+    Speech recognition test from wav file
     """
     r = sr.Recognizer()
     harvard = sr.AudioFile(f'{data_dir}harvard.wav')
@@ -21,9 +20,9 @@ def sg_recognise_from_wav():
 
 
 # ----------------------------------------------------------------------------------------------------------------------
-def sg_recognise_from_mic():
+def sg_recognize_from_mic():
     """
-    Test rozpoznawania mowy rejestrowanej przez mikrofon
+    Microphone speech recognition test
     """
     r = sr.Recognizer()
     mic = sr.Microphone()
