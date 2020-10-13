@@ -1,13 +1,17 @@
+asgiref==3.2.10
 beautifulsoup4==4.9.3
 certifi==2020.6.20
 chardet==3.0.4
 comtypes==1.1.7
+Django==3.1.2
+django-googlesearch==0.2
 docopt==0.6.2
 google==3.0.0
 idna==2.10
 Js2Py==0.70
 packaging==20.4
 pipwin==0.5.0
+PyAudio==0.2.11
 pyjsparser==2.7.1
 pyparsing==2.4.7
 pypiwin32==223
@@ -20,6 +24,7 @@ requests==2.24.0
 six==1.15.0
 soupsieve==2.0.1
 SpeechRecognition==3.8.1
+sqlparse==0.4.1
 tzlocal==2.1
 urllib3==1.25.10
 wincertstore==0.2

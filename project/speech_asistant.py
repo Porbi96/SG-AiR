@@ -12,7 +12,6 @@ def sa_speak(text: str):
 
 def sa_listen(recogniser, microphone) -> str:
     with microphone as source:
-
         recogniser.adjust_for_ambient_noise(source, duration=2)
         sa_speak("How can I help you, sir?")
         audio = recogniser.listen(source)
@@ -29,7 +28,6 @@ def sa_listen(recogniser, microphone) -> str:
     return query.lower()
 
 
-# TODO: open yt, open google, who made you, exit, who are you, search
 EXIT_EXPRESSIONS = [
     "this is all",
     "exit",
@@ -42,7 +40,7 @@ if __name__ == '__main__':
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('rate', 150)  # default is 200
-    engine.setProperty('voice', voices[1].id)
+    engine.setProperty('voice', voices[2].id)
 
     sa_speak("Welcome, Sir. I'm Macik, your speech assistant.")
     while True:
