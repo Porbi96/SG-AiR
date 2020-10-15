@@ -1,19 +1,65 @@
 import speech_recognition as sr
 import webbrowser
-import pyttsx3
+import random
+import os
+import googlesearch
+from gtts import gTTS
+from playsound import playsound
 from datetime import datetime
-from googlesearch import search
+
+"""
+Currently available instructions:
+- 'Search ...'
+- 'Open website ...'
+- 'What time is it?'
+- 'What is the weather in ...?'
+- 'Who are you?'
+- 'Who made you?'
+- exit script
+"""
+
+REPLIES = {
+    "welcome": [
+        "Welcome. I'm Maciak, your speech assistant.",
+        "Hi there. I hope you're fine today.",
+        "Hello, Sir."
+    ],
+    "not understand": [
+        "Sorry, I don't understand.",
+        "I'm so sorry. I don't know what you said.",
+        "I'm not sure about what you said."
+    ],
+    "exit": [
+        "Thank you, see you later!",
+        "I was happy to help you. Goodbye!",
+        "Goodbye.",
+        "I'll be waiting for you here."
+    ]
+}
+
+INSTRUCTIONS = {
+    "exit": [
+        "this is all",
+        "exit",
+        "bye"
+    ]
+}
 
 
 def sa_speak(text: str):
-    engine.say(text)
-    engine.runAndWait()
+    if os.path.isfile("text.mp3"):
+        os.remove("text.mp3")
+
+    tts = gTTS(text, lang='en-gb')
+    tts.save("text.mp3")
+    playsound("text.mp3")
 
 
 def sa_listen(recogniser, microphone) -> str:
     with microphone as source:
         recogniser.adjust_for_ambient_noise(source, duration=2)
-        sa_speak("How can I help you, sir?")
+        sa_speak("How can I help you?")
+        print("Say something")
         audio = recogniser.listen(source)
 
     try:
@@ -22,48 +68,53 @@ def sa_listen(recogniser, microphone) -> str:
 
     except Exception as e:
         print("Unable to recognize voice.")
-        print(e)
+        sa_speak(random.choice(REPLIES["not understand"]))
         return ""
 
     return query.lower()
 
 
-EXIT_EXPRESSIONS = [
-    "this is all",
-    "exit",
-    "bye"
-]
-
 if __name__ == '__main__':
     r = sr.Recognizer()
     mic = sr.Microphone()
-    engine = pyttsx3.init()
-    voices = engine.getProperty('voices')
-    engine.setProperty('rate', 150)  # default is 200
-    engine.setProperty('voice', voices[2].id)
 
-    sa_speak("Welcome, Sir. I'm Macik, your speech assistant.")
+    r.operation_timeout = 10  # in seconds
+
+    sa_speak(random.choice(REPLIES["welcome"]))
     while True:
         query = sa_listen(r, mic)
 
         if "search" in query:
             url = "https://www.google.com.tr/search?q={}".format(query.split("search")[-1])
+            sa_speak("No problem!")
             webbrowser.open(url)
 
         elif "open website" in query:
             website = query.split("open website")[-1]
-            for j in search(website, tld="pl", num=1, stop=1):
-                sa_speak(f"I found something! Opening {website}")
-                webbrowser.open(j)
+            if "google" in website:
+                webbrowser.open("https://www.google.com/")
+            else:
+                for j in googlesearch.search(website, tld="pl", num=1, stop=1):
+                    sa_speak(f"I found something! Opening {website}")
+                    webbrowser.open(j)
 
         elif "time" in query:
-            current_time = datetime.now().strftime("%H %M")
+            current_time = datetime.now().strftime("%H:%M")
             sa_speak(f"It's {current_time}")
 
-        elif "who made you" in query:
-            sa_speak("I have been created by Martin and Jacob")
+        elif "weather" in query:
+            phrase = query.split("weather")[-1]
+            place = phrase.split("in")[-1]
+            url = "https://www.google.com/search?q={}".format(query.split("search")[-1])
+            sa_speak(f"Let me check the weather in {place}")
+            webbrowser.open(url)
 
-        elif any(expression in query for expression in EXIT_EXPRESSIONS):
-            sa_speak("Thank you, see you later!")
-            engine.stop()
+        elif "who are you" in query:
+            sa_speak("I'm Maciak, your personal speech assistant.")
+
+        elif "who made you" in query:
+            sa_speak("I have been created by Martin and Jacob.")
+
+        elif any(expression in query for expression in INSTRUCTIONS["exit"]):
+            sa_speak(random.choice(REPLIES["exit"]))
             break
