@@ -3,6 +3,7 @@ import webbrowser
 import random
 import os
 import googlesearch
+import wikipedia
 from gtts import gTTS
 from playsound import playsound
 from datetime import datetime
@@ -13,6 +14,7 @@ Currently available instructions:
 - 'Open website ...'
 - 'What time is it?'
 - 'What is the weather in ...?'
+- 'Tell me about ...'
 - 'Who are you?'
 - 'Who made you?'
 - exit script
@@ -78,7 +80,7 @@ if __name__ == '__main__':
     r = sr.Recognizer()
     mic = sr.Microphone()
 
-    r.operation_timeout = 10  # in seconds
+    r.operation_timeout = 7  # in seconds
 
     sa_speak(random.choice(REPLIES["welcome"]))
     while True:
@@ -108,6 +110,17 @@ if __name__ == '__main__':
             url = "https://www.google.com/search?q={}".format(query.split("search")[-1])
             sa_speak(f"Let me check the weather in {place}")
             webbrowser.open(url)
+
+        elif "tell me about" in query:
+            topic = query.split("about")[-1]
+            if topic:
+                info = wikipedia.summary(topic, sentences=3)
+                sa_speak("According to Wikipedia")
+                sa_speak(info)
+
+            else:
+                print("Unable to recognize the topic.")
+                sa_speak(random.choice(REPLIES["not understand"]))
 
         elif "who are you" in query:
             sa_speak("I'm Maciak, your personal speech assistant.")
