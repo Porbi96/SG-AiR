@@ -47,6 +47,17 @@ INSTRUCTIONS = {
     ]
 }
 
+SAMPLE_REQUESTS = [
+    "search how far is from Earth to Moon",
+    "open website harvard university",
+    "what time is it",
+    "what is the weather in Krakow",
+    "tell me about facebook",
+    "who are you",
+    "who made you",
+    "exit"
+]
+
 
 def sa_speak(text: str):
     if os.path.isfile("text.mp3"):
@@ -81,10 +92,14 @@ if __name__ == '__main__':
     mic = sr.Microphone()
 
     r.operation_timeout = 7  # in seconds
+    isInDemoWrittenMode = True
 
     sa_speak(random.choice(REPLIES["welcome"]))
     while True:
-        query = sa_listen(r, mic)
+        if not isInDemoWrittenMode:
+            query = sa_listen(r, mic)
+        else:
+            query = SAMPLE_REQUESTS[1]
 
         if "search" in query:
             url = "https://www.google.com.tr/search?q={}".format(query.split("search")[-1])
@@ -130,4 +145,7 @@ if __name__ == '__main__':
 
         elif any(expression in query for expression in INSTRUCTIONS["exit"]):
             sa_speak(random.choice(REPLIES["exit"]))
+            break
+
+        if isInDemoWrittenMode:
             break
