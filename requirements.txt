@@ -13,7 +13,6 @@ Js2Py==0.70
 packaging==20.4
 pipwin==0.5.0
 playsound==1.2.2
-PyAudio==0.2.11
 pyjsparser==2.7.1
 pyparsing==2.4.7
 pypiwin32==223
