@@ -99,7 +99,7 @@ def sa_listen(file=None) -> str:
 if __name__ == '__main__':
     model = load_model('bestModel_set3_80_forSpeechAssistant.hdf5')
 
-    isInDemoWrittenMode = False
+    isInDemoWrittenMode = True
 
     sa_speak(random.choice(REPLIES["welcome"]))
     while True:
@@ -107,7 +107,7 @@ if __name__ == '__main__':
             query = sa_listen()
             print(query)
         else:
-            query = sa_listen(SAMPLE_RECORDS[0])
+            query = sa_listen(SAMPLE_RECORDS[2])
             print(query)
 
         if "cat" in query:
@@ -116,7 +116,7 @@ if __name__ == '__main__':
             webbrowser.open(url)
 
         elif "dog" in query:
-            info = wikipedia.summary("dog ", sentences=3)
+            info = wikipedia.summary("animal dog", sentences=4)
             sa_speak("According to Wikipedia")
             sa_speak(info)
 
