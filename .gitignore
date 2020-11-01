@@ -3,3 +3,7 @@ venv
 *.wav
 *.mp3
 .google-cookie
+sg_venv2
+sg-venv
+.ipynb_checkpoints
+
