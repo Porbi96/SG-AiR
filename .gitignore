@@ -3,4 +3,3 @@ venv
 *.wav
 *.mp3
 .google-cookie
-*.hdf5
