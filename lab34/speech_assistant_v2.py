@@ -55,7 +55,7 @@ SAMPLE_RECORDS = [
 ]
 
 
-def choose_random_test_file(command: str):
+def select_random_test_file(command: str):
     path = DATA_DIR + command + "/"
     vaw_files = [f for f in os.listdir(path) if isfile(join(path, f))]
     random_choice = random.choice(vaw_files)
@@ -119,7 +119,7 @@ if __name__ == '__main__':
             print(query)
         else:
             command = 'dog'
-            test_file = choose_random_test_file(command)
+            test_file = select_random_test_file(command)
             query = sa_listen(test_file)
             print(query)
 
