@@ -17,4 +17,4 @@ Currently available instructions:
 ### Quick Start
 1. Clone repo.
 2. Prepare all required libs and packages.
-3. Run `project/speech_assistant.py`.
+3. Run `lab12/speech_assistant.py`.

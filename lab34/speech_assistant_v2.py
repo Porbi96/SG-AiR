@@ -1,5 +1,7 @@
 import webbrowser
 import random
+from os.path import isfile, join
+
 import googlesearch
 import wikipedia
 from gtts import gTTS
@@ -17,11 +19,13 @@ from sklearn.preprocessing import LabelEncoder
 """
 Currently available instructions:
 - 'marvin' - play song 'Marvin" on YouTube
-- 'wow' - ???
+- 'wow' - display information about the weather in Krakow
 - 'cat' - show cats in Google Graphics
 - 'dog' - read dog info on Wikipedia
 - 'stop' - exit script
 """
+
+DATA_DIR = "../data/"
 
 REPLIES = {
     "welcome": [
@@ -51,6 +55,13 @@ SAMPLE_RECORDS = [
 ]
 
 
+def choose_random_test_file(command: str):
+    path = DATA_DIR + command + "/"
+    vaw_files = [f for f in os.listdir(path) if isfile(join(path, f))]
+    random_choice = random.choice(vaw_files)
+    return path + random_choice
+
+
 def sa_predict(audio):
     labels=["stop", "marvin", "wow", "cat", "dog"]
 
@@ -74,7 +85,7 @@ def sa_speak(text: str):
 
 def sa_listen(file=None) -> str:
     sampleRate = 16000
-    duration = 1 # seconds
+    duration = 1  # seconds
     filename = 'record.wav'
 
     if file is None:
@@ -107,7 +118,9 @@ if __name__ == '__main__':
             query = sa_listen()
             print(query)
         else:
-            query = sa_listen(SAMPLE_RECORDS[2])
+            command = 'dog'
+            test_file = choose_random_test_file(command)
+            query = sa_listen(test_file)
             print(query)
 
         if "cat" in query:
@@ -120,15 +133,17 @@ if __name__ == '__main__':
             sa_speak("According to Wikipedia")
             sa_speak(info)
 
+        elif "wow" in query:
+            place = "Cracow"
+            url = "https://www.google.com/search?q={}".format(query.split("search")[-1])
+            sa_speak(f"Let me check the weather in {place}")
+            webbrowser.open(url)
+
         elif "marvin" in query:
             website = "schafter marvin youtube"
             for j in googlesearch.search(website, tld="pl", num=1, stop=1):
                 sa_speak(f"I found something! Opening {website}")
                 webbrowser.open(j)
-
-        elif "wow" in query:
-            sa_speak("Sorry, this feature is not implemented yet.")
-            # TODO: make implementation for 'wow'
 
         elif "stop" in query:
             sa_speak(random.choice(REPLIES["exit"]))
