@@ -46,14 +46,6 @@ REPLIES = {
     ]
 }
 
-SAMPLE_RECORDS = [
-    "r_marvin.wav",
-    "r_cat.wav",
-    "r_dog.wav",
-    "r_wow.wav",
-    "r_stop.wav"
-]
-
 
 def select_random_test_file(command: str):
     path = DATA_DIR + command + "/"
@@ -118,6 +110,7 @@ if __name__ == '__main__':
             query = sa_listen()
             print(query)
         else:
+            # Available commands: dog, cat, marvin, wow, stop
             command = 'dog'
             test_file = select_random_test_file(command)
             query = sa_listen(test_file)
@@ -135,7 +128,7 @@ if __name__ == '__main__':
 
         elif "wow" in query:
             place = "Cracow"
-            url = "https://www.google.com/search?q={}".format(query.split("search")[-1])
+            url = "https://www.google.com/search?q={}".format("weather Cracow")
             sa_speak(f"Let me check the weather in {place}")
             webbrowser.open(url)
 
