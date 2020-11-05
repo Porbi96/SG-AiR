@@ -69,10 +69,13 @@ def sa_predict(audio):
 def sa_speak(text: str):
     if os.path.isfile("text.mp3"):
         os.remove("text.mp3")
-
-    tts = gTTS(text, lang='en-gb')
-    tts.save("text.mp3")
-    playsound("text.mp3")
+    try:
+        tts = gTTS(text, lang='en-gb', tld='pl')
+        tts.save("text.mp3")
+        playsound("text.mp3")
+    except ValueError:
+        print("Google speech to text problems... Continue without speaking.")
+        pass
 
 
 def sa_listen(file=None) -> str:
@@ -102,7 +105,7 @@ def sa_listen(file=None) -> str:
 if __name__ == '__main__':
     model = load_model('bestModel_set3_80_forSpeechAssistant.hdf5')
 
-    isInDemoWrittenMode = True
+    isInDemoWrittenMode = False
 
     sa_speak(random.choice(REPLIES["welcome"]))
     while True:
@@ -111,7 +114,7 @@ if __name__ == '__main__':
             print(query)
         else:
             # Available commands: dog, cat, marvin, wow, stop
-            command = 'dog'
+            command = 'cat'
             test_file = select_random_test_file(command)
             query = sa_listen(test_file)
             print(query)

@@ -6,4 +6,4 @@ venv
 sg_venv2
 sg-venv
 .ipynb_checkpoints
-
+*.pkl
